@@ -1,7 +1,7 @@
-﻿import sys
-from PyQt5.QtWidgets import QApplication, QMainWindow, QWidget, QPushButton, QFileDialog, QGridLayout, QSizePolicy, QRadioButton, QButtonGroup, QLabel
-from PyQt5.QtGui import QIcon, QPixmap
-from PyQt5.QtCore import Qt
+import sys
+from PyQt6.QtWidgets import QApplication, QMainWindow, QWidget, QPushButton, QFileDialog, QGridLayout, QSizePolicy, QRadioButton, QButtonGroup, QLabel
+from PyQt6.QtGui import QIcon, QPixmap
+from PyQt6.QtCore import Qt
 from PIL import Image
 
 class MainWindow(QMainWindow):
@@ -62,11 +62,11 @@ class MainWindow(QMainWindow):
         self.layout.addWidget(self.start_button, 4, 1)
 
         self.central_widget.setSizePolicy(
-            QSizePolicy.Expanding, QSizePolicy.Expanding)
-        self.watermark_button.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
-        self.image_button.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
-        self.folder_button.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
-        self.start_button.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
+            QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding)
+        self.watermark_button.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding)
+        self.image_button.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding)
+        self.folder_button.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding)
+        self.start_button.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding)
 
         self.central_widget.setLayout(self.layout)
         self.setMinimumSize(500, 500)
@@ -78,25 +78,25 @@ class MainWindow(QMainWindow):
             self.watermark_position = radioButton.text()
 
     def select_watermark(self):
-        file_dialog = QFileDialog()
+        file_dialog = QFileDialog(self)
         file_dialog.setNameFilter("PNG files (*.png)")
-        if file_dialog.exec_():
+        if file_dialog.exec():
             self.watermark_path = file_dialog.selectedFiles()[0]
             pixmap = QPixmap(self.watermark_path)
-            self.watermark_label.setPixmap(pixmap.scaled(128, 128, aspectRatioMode=Qt.KeepAspectRatio))
+            self.watermark_label.setPixmap(pixmap.scaled(128, 128, aspectRatioMode=Qt.AspectRatioMode.KeepAspectRatio))
 
     def select_images(self):
-        file_dialog = QFileDialog()
+        file_dialog = QFileDialog(self)
         file_dialog.setNameFilter("Image files (*.png *.jpg *.jpeg)")
-        file_dialog.setFileMode(QFileDialog.ExistingFiles)
-        if file_dialog.exec_():
+        file_dialog.setFileMode(QFileDialog.FileMode.ExistingFiles)
+        if file_dialog.exec():
             self.image_paths = file_dialog.selectedFiles()
             self.image_button.setIcon(QIcon('path_to_image_icon.ico'))
 
     def select_output_folder(self):
-        file_dialog = QFileDialog()
-        file_dialog.setFileMode(QFileDialog.DirectoryOnly)
-        if file_dialog.exec_():
+        file_dialog = QFileDialog(self)
+        file_dialog.setFileMode(QFileDialog.FileMode.DirectoryOnly)
+        if file_dialog.exec():
             self.output_folder = file_dialog.selectedFiles()[0]
             self.folder_button.setIcon(QIcon('path_to_folder_icon.ico'))
             self.folder_label.setText(self.output_folder)
@@ -117,7 +117,7 @@ class MainWindow(QMainWindow):
             if self.watermark_position == "教育":
                 position = ((base_width - watermark.width) // 2, (base_height - watermark.height) // 2)
             else:
-                position = ((base_width - watermark.width) // 2, int(base_height * 0.8) - (watermark.height // 2))  # Modify this line
+                position = ((base_width - watermark.width) // 2, int(base_height * 0.8) - (watermark.height // 2))
 
             base_image.paste(watermark, position, watermark)
 
@@ -127,4 +127,4 @@ class MainWindow(QMainWindow):
 if __name__ == "__main__":
     app = QApplication(sys.argv)
     window = MainWindow()
-    sys.exit(app.exec_())
+    sys.exit(app.exec())
