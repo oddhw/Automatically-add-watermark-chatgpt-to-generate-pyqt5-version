@@ -1,6 +1,6 @@
-﻿import sys
-from PyQt5.QtWidgets import QApplication, QMainWindow, QWidget, QPushButton, QFileDialog, QGridLayout, QSizePolicy
-from PyQt5.QtGui import QIcon
+import sys
+from PyQt6.QtWidgets import QApplication, QMainWindow, QWidget, QPushButton, QFileDialog, QGridLayout, QSizePolicy
+from PyQt6.QtGui import QIcon
 from PIL import Image
 
 class MainWindow(QMainWindow):
@@ -40,11 +40,11 @@ class MainWindow(QMainWindow):
 
         # 设置按钮的高度和宽度均分整个页面的四分之一
         self.central_widget.setSizePolicy(
-            QSizePolicy.Expanding, QSizePolicy.Expanding)
-        button1.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
-        button2.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
-        button3.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
-        button4.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
+            QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding)
+        button1.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding)
+        button2.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding)
+        button3.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding)
+        button4.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding)
 
         self.central_widget.setLayout(self.layout)
         self.setMinimumSize(500, 500)
@@ -53,20 +53,20 @@ class MainWindow(QMainWindow):
     def select_watermark(self):
         file_dialog = QFileDialog()
         file_dialog.setNameFilter("PNG files (*.png)")
-        if file_dialog.exec_():
+        if file_dialog.exec():
             self.watermark_path = file_dialog.selectedFiles()[0]
 
     def select_images(self):
         file_dialog = QFileDialog()
         file_dialog.setNameFilter("Image files (*.png *.jpg *.jpeg)")
-        file_dialog.setFileMode(QFileDialog.ExistingFiles)
-        if file_dialog.exec_():
+        file_dialog.setFileMode(QFileDialog.FileMode.ExistingFiles)
+        if file_dialog.exec():
             self.image_paths = file_dialog.selectedFiles()
 
     def select_output_folder(self):
         file_dialog = QFileDialog()
-        file_dialog.setFileMode(QFileDialog.DirectoryOnly)
-        if file_dialog.exec_():
+        file_dialog.setFileMode(QFileDialog.FileMode.DirectoryOnly)
+        if file_dialog.exec():
             self.output_folder = file_dialog.selectedFiles()[0]
 
     def start_watermarking(self):
@@ -85,7 +85,11 @@ class MainWindow(QMainWindow):
             output_path = self.output_folder + "/" + image_path.split("/")[-1].split(".")[0] + "_watermarked.png"
             base_image.save(output_path)
 
-if __name__ == "__main__":
+def main():
     app = QApplication(sys.argv)
     window = MainWindow()
-    sys.exit(app.exec_())
+    window.show()
+    sys.exit(app.exec())
+
+if __name__ == "__main__":
+    main()
